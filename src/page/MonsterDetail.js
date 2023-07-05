@@ -24,7 +24,9 @@ function MonsterDetail() {
   if (!pokemon) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <h1>{pokemon.name.english}</h1>
       <h2>{pokemon.type.join(", ")}</h2>
       {pokemon.base &&
@@ -33,6 +35,7 @@ function MonsterDetail() {
             {key}: {value}
           </div>
         ))}
+
       <Link to={`/pokemon/${id}/info`}>
         <Button variant='secondary'>Show Details!!</Button>
       </Link>

@@ -47,5 +47,6 @@
   "description": "https://port-0-poke-k19y2kljln98xi.sel4.cloudtype.app/pokemon",
   "main": "index.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": []
 }

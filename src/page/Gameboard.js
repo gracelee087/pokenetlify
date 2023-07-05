@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function Gameboard() {
+function GameBoard() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [opponentPokemon, setOpponentPokemon] = useState(null);
@@ -32,17 +32,43 @@ function Gameboard() {
     fetchOpponentPokemon();
   }, []);
 
-  if (!pokemon || !opponentPokemon) return <div>Loading...</div>;
+  const handleStart = async () => {
+    let fightWinner; //winnder updated 적는곳
 
-  const handleStart = () => {
     if (pokemon.base.Attack > opponentPokemon.base.Attack) {
-      setWinner("pokemon");
+      fightWinner = "pokemon";
     } else if (pokemon.base.Attack < opponentPokemon.base.Attack) {
-      setWinner("opponent");
+      fightWinner = "opponent";
     } else {
-      setWinner("draw");
+      fightWinner = "draw";
+    }
+
+    // 승자 정보를 백엔드에 저장
+    try {
+      const response = await fetch(
+        "https://pokeserverwbs.onrender.com/game/save",
+        {
+          //여기수정
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            winner: fightWinner,
+            opponent: opponentPokemon.name.english,
+            turns: 10, // 게임의 턴 수 등 추가 필드도 여기에 포함
+          }),
+        }
+      );
+      const data = await response.json();
+      setWinner(fightWinner);
+      console.log("Game saved:", data);
+    } catch (error) {
+      console.error("Error saving game:", error);
     }
   };
+
+  if (!pokemon || !opponentPokemon) return <div>Loading...</div>;
 
   return (
     <div>
@@ -85,9 +111,22 @@ function Gameboard() {
             </div>
           </div>
         </div>
-        <button className='btn btn-primary' onClick={handleStart}>
-          START
-        </button>
+        <div className='d-flex justify-content-center'>
+          <button
+            className='btn btn-primary'
+            onClick={handleStart}
+            style={{
+              width: "30%",
+              padding: "10px",
+              margin: "20px",
+              border: "2px solid lightgray",
+              color: "black",
+              backgroundColor: "transparent",
+            }}
+          >
+            START
+          </button>
+        </div>
         {winner && (
           <div style={{ marginTop: "20px", textAlign: "center" }}>
             <h3>
@@ -117,4 +156,4 @@ function Gameboard() {
   );
 }
 
-export default Gameboard;
+export default GameBoard;

@@ -7,7 +7,6 @@ function MonsterAll({ allMonsters }) {
     <div>
       <Container>
         <Row>
-          <div>넷플리파이 업데이트 테스트용</div>
           {allMonsters.map((monster) => (
             <Col lg={3} key={monster.id}>
               <ListOfMonster pokemon={monster} />
