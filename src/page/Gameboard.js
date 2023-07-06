@@ -66,7 +66,7 @@ function GameBoard() {
     } catch (error) {
       console.error("Error saving game:", error);
     }
-  };
+  };   
 
   if (!pokemon || !opponentPokemon) return <div>Loading...</div>;
 
