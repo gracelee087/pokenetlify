@@ -56,7 +56,7 @@ function GameBoard() {
           body: JSON.stringify({
             winner: fightWinner,
             opponent: opponentPokemon.name.english,
-            turns: 10, // 게임의 턴 수 등 추가 필드도 여기에 포함
+            turns: 1, // 게임의 턴 수 등 추가 필드도 여기에 포함
           }),
         }
       );
