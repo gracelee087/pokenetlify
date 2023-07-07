@@ -3,13 +3,14 @@ import Table from "react-bootstrap/Table";
 
 function LeaderBoard() {
   const [gameResults, setGameResults] = useState([]);
+  const [sortAscending, setSortAscending] = useState(true);
 
   useEffect(() => {
     const fetchGameResults = async () => {
       try {
         const response = await fetch(
           "https://pokeserverwbs.onrender.com/game/leaderboard"
-        ); //여기서버주소수정
+        ); // Modify the server address here
         const data = await response.json();
         if (Array.isArray(data.games)) {
           setGameResults(data.games);
@@ -24,10 +25,32 @@ function LeaderBoard() {
     fetchGameResults();
   }, []);
 
+  const handleSort = () => {
+    const sortedResults = [...gameResults];
+    sortedResults.sort((a, b) => {
+      if (sortAscending) {
+        return a._id.localeCompare(b._id);
+      } else {
+        return b._id.localeCompare(a._id);
+      }
+    });
+    setGameResults(sortedResults);
+    setSortAscending(!sortAscending);
+  };
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div style={{ width: "50%" }}>
         <h1 className='text-center'>Leader's Board</h1>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button
+            className='btn btn-primary'
+            onClick={handleSort}
+            style={{ backgroundColor: "grey", padding: "10px", color: "white" }}
+          >
+            {sortAscending ? "Latest " : "Oldest "}
+          </button>
+        </div>
         <Table striped bordered hover>
           <thead>
             <tr>
